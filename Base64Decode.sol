@@ -1,44 +1,6 @@
 library Base64 {
 
     bytes constant private base64stdchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-                                            
-    function encode(string memory _str) internal pure returns (string memory) {
-        uint i = 0;                                 // Counters & runners
-        uint j = 0;
-
-        uint padlen = bytes(_str).length;           // Lenght of the input string "padded" to next multiple of 3
-        if (padlen%3 != 0) padlen+=(3-(padlen%3));
-
-        bytes memory _bs = bytes(_str);
-        bytes memory _ms = new bytes(padlen);       // extra "padded" bytes in _ms are zero by default
-        // copy the string
-        for (i=0; i<_bs.length; i++) {              // _ms = input string + zero padding
-            _ms[i] = _bs[i];
-        }
- 
-        uint res_length = (padlen/3) * 4;           // compute the length of the resulting string = 4/3 of input
-        bytes memory res = new bytes(res_length);   // create the result string
-
-        for (i=0; i < padlen; i+=3) {
-            uint c0 = uint(uint8(_ms[i])) >> 2;
-            uint c1 = (uint(uint8(_ms[i])) & 3) << 4 |  uint(uint8(_ms[i+1])) >> 4;
-            uint c2 = (uint(uint8(_ms[i+1])) & 15) << 2 | uint(uint8(_ms[i+2])) >> 6;
-            uint c3 = (uint(uint8(_ms[i+2])) & 63);
-
-            res[j]   = base64stdchars[c0];
-            res[j+1] = base64stdchars[c1];
-            res[j+2] = base64stdchars[c2];
-            res[j+3] = base64stdchars[c3];
-
-            j += 4;
-        }
-
-        // Adjust trailing empty values
-        if ((padlen - bytes(_str).length) >= 1) { res[j-1] = base64stdchars[64];}
-        if ((padlen - bytes(_str).length) >= 2) { res[j-2] = base64stdchars[64];}
-        return string(res);
-    }
-
 
     function decode(string memory _str) internal view returns (string memory) {
         require( (bytes(_str).length % 4) == 0, "Length not multiple of 4");
