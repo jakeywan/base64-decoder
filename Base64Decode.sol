@@ -6,8 +6,8 @@ library Base64 {
         require( (bytes(_str).length % 4) == 0, "Length not multiple of 4");
         bytes memory _bs = bytes(_str); // _bs is the bytes of our string
 
-        uint i = 0;
-        uint j = 0;
+        uint i = 0; // tracks index position in encoded string
+        uint j = 0; // tracks index position in new, decoded string
         uint dec_length = (_bs.length/4) * 3; // the decoded length is 4/3 the length of the encoded one
         bytes memory dec = new bytes(dec_length); // dec is our decoded bytes
 
