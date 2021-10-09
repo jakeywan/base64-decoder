@@ -25,6 +25,7 @@ library Base64 {
             j += 3; // increment j by 3 more so we can keep writing into the proper indexes for decoded string
         }
 
+        // to be honest not sure what these next two parts were for in the original. commented out
         // while (dec[--j]==0)
         //     {}
 
@@ -52,11 +53,10 @@ library Base64 {
     // this figures out the character's index in the table of standard characters
     // making this a lookup table instead of a for loop might save gas
     function charpos(bytes1 char) private pure returns (uint pos) {
-        // for (; base64stdchars[pos] != char; pos++) 
-        //     {}    //for loop body is not necessary
-        // require (base64stdchars[pos]==char, "Illegal char in string");
-        // return pos;
-        return 0;
+        for (; base64stdchars[pos] != char; pos++) 
+            {}    //for loop body is not necessary
+        require (base64stdchars[pos]==char, "Illegal char in string");
+        return pos;
     }
 
 }
